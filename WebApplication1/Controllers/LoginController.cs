@@ -62,13 +62,25 @@ namespace WebApplication1.Controllers
 //        }
 
         // DELETE api/Login/5
-        public string DeleteUser(int id)
+        public IHttpActionResult DeleteUser(int id)
         {
-            logBL.DeleteUser(id);
-            return "Deleted";
+   
+            try
+            {
+                Trace.WriteLine(String.Format("LoginController - DeleteUser"));
+                User result = logBL.DeleteUser(id);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(String.Format("LoginController - DeleteUser - Error: %s", e.Message));
+                return BadRequest(string.Format("{0}", e.Message));
 
+            }
         }
-
 
     }
-        }
+
+
+}
+        
