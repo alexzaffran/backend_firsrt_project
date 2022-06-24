@@ -49,7 +49,7 @@ namespace WebApplication1.Controllers
             catch (Exception e)
             {
                 Trace.TraceError(String.Format("LoginController - AddUser - Error: %s", e.Message));
-                return BadRequest(String.Format("%s", e.Message));
+                return BadRequest(String.Format("{0}", e.Message));
 
             }
         }

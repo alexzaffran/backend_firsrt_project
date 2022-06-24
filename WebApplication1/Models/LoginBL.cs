@@ -39,7 +39,7 @@ namespace WebApplication1.Models
 
             if (userIsExist != null)
             {
-                throw new Exception(String.Format("User %s already exist", u.User_Name));
+                throw new Exception(String.Format("User {0} already exist", u.User_Name));
 
             }
             User userSaved = db.User.Add(u);
@@ -60,12 +60,13 @@ namespace WebApplication1.Models
         //    db.SaveChanges();
         //}
 
-        public void DeleteUser(int id)
+        public User DeleteUser(int id)
         {
-            var p = db.User.Where(x => x.ID == id).First();
-            db.User.Remove(p);
+            var userFounded = db.User.Where(x => x.ID == id).FirstOrDefault();
+            db.User.Remove(userFounded);
 
             db.SaveChanges();
+            return userFounded;
         }
 
     }
