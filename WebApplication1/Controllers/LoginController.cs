@@ -50,9 +50,10 @@ namespace WebApplication1.Controllers
             {
                 Trace.TraceError(String.Format("LoginController - AddUser - Error: %s", e.Message));
                 return BadRequest(String.Format("%s", e.Message));
+
             }
         }
-    
+   
 
 
 //        // PUT api/<controller>/5
