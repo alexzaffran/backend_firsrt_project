@@ -16,7 +16,9 @@ namespace WebApplication1.Controllers
         static LoginBL logBL = new LoginBL();
 
         // GET: api/Login
-        public List<User> Get()
+        [HttpGet]
+        [ActionName("GetAllUser")]
+        public List<User> GetAllUser()
         {
             try
             {
@@ -38,7 +40,9 @@ namespace WebApplication1.Controllers
         //}
 
         // POST api/Login
-        public IHttpActionResult AddUser(User u)
+        [HttpPost]
+        [ActionName("AddUser")]
+        public IHttpActionResult AddUser([FromBody] User u)
         {
             try
             {
@@ -53,15 +57,17 @@ namespace WebApplication1.Controllers
 
             }
         }
-   
 
 
-//        // PUT api/<controller>/5
-//        public void Put(int id, [FromBody] string value)
-//        {
-//        }
+
+        //        // PUT api/<controller>/5
+        //        public void Put(int id, [FromBody] string value)
+        //        {
+        //        }
 
         // DELETE api/Login/5
+        [HttpDelete]
+        [ActionName("DeleteUser")]
         public IHttpActionResult DeleteUser(int id)
         {
    

@@ -14,6 +14,8 @@ namespace WebApplication1.Controllers
     {
         static EmployeeBL empBL = new EmployeeBL();
         // GET api/<controller>
+        [HttpGet]
+        [ActionName("GetAllEmployees")]
         public List<Employee> Get()
         {
             try
@@ -30,31 +32,81 @@ namespace WebApplication1.Controllers
         }
 
         // GET api/<controller>/5
-        public Employee Get(int id)
+        [HttpGet]
+        [ActionName("GetEmployee")]
+        public IHttpActionResult GetEmployee(int id)
         {
-            return empBL.GetEmployee(id);
+            try
+            {
+                Trace.WriteLine(String.Format("EmployeeController - GetEmployee"));
+                Employee result = empBL.GetEmployee(id);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(String.Format("LoginController - AddUser - Error: %s", e.Message));
+                return BadRequest(String.Format("{0}", e.Message));
+
+            }
         }
 
+
         // POST api/<controller>
-        public string Post(Employee emp)
+        [HttpPost]
+        [ActionName("AddEmployee")]
+        public IHttpActionResult AddEmployee(Employee emp)
         {
-            empBL.AddEmployee(emp);
-            return "Created!";
-        
+            try
+            {
+                Trace.WriteLine(String.Format("EmployeeController - AddEmployee"));
+                Employee result = empBL.AddEmployee(emp);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(String.Format("LoginController - AddUser - Error: %s", e.Message));
+                return BadRequest(String.Format("{0}", e.Message));
+
+            }
         }
 
         // PUT api/<controller>/5
-        public string Put(int id, Employee emp)
+        
+        [HttpPut]
+        [ActionName("UpdateEmployee")]
+        public IHttpActionResult UpdateEmployee(int id, Employee emp)
         {
-            empBL.UpdateEmployee(id, emp);
-            return "Updated!";
+            try
+            {
+                Trace.WriteLine(String.Format("EmployeeController - UpdateEmployee"));
+                Employee result = empBL.UpdateEmployee(id,emp);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(String.Format("EmployeeController - UpdateEmployee - Error: %s", e.Message));
+                return BadRequest(string.Format("{0}", e.Message));
+
+            }
         }
 
         // DELETE api/<controller>/5
-       public string Delete(int id)
+        [HttpDelete]
+        [ActionName("DeleteEmployee")]
+        public IHttpActionResult DeleteEmployee(int id)
         {
-            empBL.DeleteEmployee(id);
-            return "Deleted";
+            try
+            {
+                Trace.WriteLine(String.Format("EmployeeController - DeleteEmployee"));
+                Employee result = empBL.DeleteEmployee(id);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(String.Format("EmployeeController - DeleteEmployee - Error: %s", e.Message));
+                return BadRequest(string.Format("{0}", e.Message));
+
+            }
 
         }
     }
