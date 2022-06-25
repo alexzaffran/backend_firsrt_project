@@ -16,7 +16,7 @@ namespace WebApplication1.Controllers
         // GET api/<controller>
         [HttpGet]
         [ActionName("GetAllEmployees")]
-        public List<Employee> Get()
+        public List<EmployeeData> Get()
         {
             try
             {
@@ -108,6 +108,23 @@ namespace WebApplication1.Controllers
 
             }
 
+        }
+
+        [HttpGet]
+        [ActionName("SearchEmployee/{input}")]
+        public List<EmployeeData> SearchEmployee(string input)
+        {
+            try
+            {
+                Trace.WriteLine(String.Format("EmployeeController - SearchEmployee"));
+                return empBL.Search(input);
+
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(String.Format("LoginController - SearchEmployee - Error: %s", e.Message));
+                throw new Exception(e.Message);
+            }
         }
     }
 }
