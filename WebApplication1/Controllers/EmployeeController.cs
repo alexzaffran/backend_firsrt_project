@@ -16,18 +16,18 @@ namespace WebApplication1.Controllers
         // GET api/<controller>
         [HttpGet]
         [ActionName("GetAllEmployees")]
-        public List<EmployeeData> Get()
+        public IHttpActionResult Get()
         {
             try
             {
                 Trace.WriteLine(String.Format("EmployeeController - Get"));
-                return empBL.GetAllDataEmployee();
+                return Ok(empBL.GetAllDataEmployee());
 
             }
             catch (Exception e)
             {
                 Trace.TraceError(String.Format("LoginController - Get - Error: %s", e.Message));
-                throw new Exception(e.Message);
+                return BadRequest(e.Message);
             }
         }
 
@@ -39,7 +39,7 @@ namespace WebApplication1.Controllers
             try
             {
                 Trace.WriteLine(String.Format("EmployeeController - GetEmployee"));
-                Employee result = empBL.GetEmployee(id);
+                EmployeeData result = empBL.GetEmployee(id);
                 return Ok(result);
             }
             catch (Exception e)
@@ -111,19 +111,19 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        [ActionName("SearchEmployee/{input}")]
-        public List<EmployeeData> SearchEmployee(string input)
+        [ActionName("SearchEmployee")]
+        public IHttpActionResult SearchEmployee([FromUri] string input)
         {
             try
             {
                 Trace.WriteLine(String.Format("EmployeeController - SearchEmployee"));
-                return empBL.Search(input);
+                return Ok(empBL.Search(input));
 
             }
             catch (Exception e)
             {
                 Trace.TraceError(String.Format("LoginController - SearchEmployee - Error: %s", e.Message));
-                throw new Exception(e.Message);
+                return BadRequest(e.Message);
             }
         }
     }

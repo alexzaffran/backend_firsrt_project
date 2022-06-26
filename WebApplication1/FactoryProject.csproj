@@ -236,6 +236,7 @@
     <Compile Include="Models\Bl\EmployeeBL.cs" />
     <Compile Include="Models\Bl\LoginBL.cs" />
     <Compile Include="Models\Bl\ShiftBl.cs" />
+    <Compile Include="Models\DepartmentData.cs" />
     <Compile Include="Models\EmployeeData.cs" />
     <Compile Include="Models\ShiftData.cs" />
     <Compile Include="Models\UserLoginRequest.cs" />

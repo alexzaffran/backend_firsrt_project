@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using webapplication1.models;
@@ -46,9 +47,29 @@ namespace WebApplication1.Models
             return employeesWithdeparment;
         }
 
-        public Employee GetEmployee(int id)
+        public EmployeeData GetEmployee(int id)
         {
-            return db.Employee.Where(x => x.ID == id).FirstOrDefault();
+            var employee = db.Employee
+                .Where(x => x.ID == id)
+                .Join(
+                db.Department1,
+                emp => emp.DepartmentID,
+                department => department.ID,
+                (emp, department) =>new EmployeeData
+                {
+                    Id = emp.ID,
+                    FirstName = emp.First_Name,
+                    LastName = emp.Last_Name,
+                    StartWorkYear = emp.Start_Work_Year,
+                    DepartmentId = emp.DepartmentID,
+                    DepartmentName = department.Name,
+                }
+                )
+                .FirstOrDefault();
+
+            employee.ShiftList = shiftBl.getAllShiftForOneEmployee(id);
+
+            return employee;
         }
 
         public Employee AddEmployee(Employee newEmp)
@@ -62,10 +83,19 @@ namespace WebApplication1.Models
         {
             var updatedEmp = db.Employee.Where(x => x.ID == id).FirstOrDefault();
 
-            updatedEmp.First_Name = emp.First_Name;
-            updatedEmp.Last_Name = emp.Last_Name;
-            updatedEmp.Start_Work_Year = emp.Start_Work_Year;
-            updatedEmp.DepartmentID = emp.DepartmentID;
+            if(updatedEmp == null)
+            {
+                throw new Exception(string.Format("Employee id: {0} dosen't exist", id));
+            }
+
+            if(emp.First_Name!=null)
+                updatedEmp.First_Name = emp.First_Name;
+            if (emp.Last_Name != null)
+                updatedEmp.Last_Name = emp.Last_Name;
+            if (emp.Start_Work_Year != null)
+                updatedEmp.Start_Work_Year = emp.Start_Work_Year;
+            if (emp.DepartmentID != null)
+                updatedEmp.DepartmentID = emp.DepartmentID;
 
             db.SaveChanges();
             return updatedEmp;

@@ -33,6 +33,9 @@ public class ShiftBl
             .Where(es => es.EmployeeID == employeeId)
             .Select(es => es.ShiftID);
 
+            db.EmployeeShift.RemoveRange(db.EmployeeShift
+                .Where(es => es.EmployeeID == employeeId));
+
         var shifts = db.Shift
                 .Where(s => shiftIdRelevant.Any(sh => sh == s.ID))
                 .ToList();
@@ -77,12 +80,19 @@ public class ShiftBl
 
         public Shift addshift(Shift s, int employeeId)
     {
+            var employeeFounded = db.Employee.Where(x => x.ID == employeeId).FirstOrDefault();
+            if(employeeFounded == null)
+            {
+                throw new Exception(String.Format("user id: {0} not founded", employeeId));
+            }
         var shiftSaved = db.Shift.Add(s);
         db.SaveChanges();
 
         var employeeShift = new EmployeeShift();
         employeeShift.EmployeeID = employeeId;
         employeeShift.ShiftID = shiftSaved.ID;
+
+            db.EmployeeShift.Add(employeeShift);
 
         db.SaveChanges();
 

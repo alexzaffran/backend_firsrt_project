@@ -17,39 +17,75 @@ namespace WebApplication1.Controllers
         static DepartmentBL depBL = new DepartmentBL();
 
         // GET api/<controller>
-
-        public List<Department1> Get()
+        [HttpGet]
+        [ActionName("GetAllDepartments")]
+        public IHttpActionResult GetAllDepartmentsData()
         {
             try
             {
                 Trace.WriteLine(String.Format("DepartmentController - Get"));
-                return depBL.GetAll();
+                return Ok(depBL.GetAllDepartmentsData());
 
             }
             catch (Exception e)
             {
                 Trace.TraceError(String.Format("LoginController - Get - Error: %s", e.Message));
-                throw new Exception(e.Message);
+               return BadRequest(e.Message);
+            }
+        }
+
+
+
+        // GET api/<controller>/5
+
+
+        [HttpGet]
+        [ActionName("GetDep")]
+
+        public IHttpActionResult GetDepById(int id)
+        {
+            try
+            {
+                Trace.WriteLine(String.Format("DepartmentController - GetDepById"));
+                DepartmentData result = depBL.GetDepById(id);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(String.Format("LoginController - AddUser - Error: %s", e.Message));
+                return BadRequest(String.Format("{0}", e.Message));
+
+            }
+        }
+
+
+
+
+
+        //POST api/<controller>
+        [HttpPost]
+        [ActionName("AddDep")]
+
+        public IHttpActionResult AddDep(Department1 dep)
+        {
+            try
+            {
+                Trace.WriteLine(String.Format("DepartmentController - GetDepById"));
+                Department1 result = depBL.AddDep(dep);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(String.Format("LoginController - AddUser - Error: %s", e.Message));
+                return BadRequest(String.Format("{0}", e.Message));
+
             }
         }
     }
 }
+        
 
-//        // GET api/<controller>/5
-//        public string Get(int id)
-//        {
-//            return "value";
-//        }
-
-//        // POST api/<controller>
-//        public void Post([FromBody] string value)
-//        {
-//            depBL.AddDepartment(emp);
-//            return "Created!";
-
-//        }
-
-//        // PUT api/<controller>/5
+////        // put api/<controller>/5
 //        public void Put(int id, [FromBody] string value)
 //        {
 //        }

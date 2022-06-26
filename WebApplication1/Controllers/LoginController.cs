@@ -16,7 +16,7 @@ namespace WebApplication1.Controllers
         // GET: api/Login
         [HttpPost]
         [ActionName("Login")]
-        public User Login([FromBody] UserLoginRequest body)
+        public IHttpActionResult Login([FromBody] UserLoginRequest body)
         {
             try
             {
@@ -27,46 +27,47 @@ namespace WebApplication1.Controllers
                     HttpContext.Current.Session["IsIsAuthenticated"] = true;
                     HttpContext.Current.Session["UserId"] = rightUser.ID;
                 }
-                return rightUser;
+                return Ok(rightUser);
 
             }
             catch (Exception e)
             {
                 Trace.TraceError(String.Format("LoginController - Get - Error: %s", e.Message));
-                throw new Exception(e.Message);
+                return BadRequest(e.Message);
             }
         }
 
         [HttpGet]
         [ActionName("Logout")]
-        public void Logout()
+        public IHttpActionResult Logout()
         {
             try
             {
                 Trace.WriteLine(String.Format("LoginController - Logout"));
                 HttpContext.Current.Session.Clear();
+                return Ok(true);
             }
             catch (Exception e)
             {
                 Trace.TraceError(String.Format("LoginController - Logout - Error: %s", e.Message));
-                throw new Exception(e.Message);
+                return BadRequest(e.Message);
             }
         }
 
         [HttpGet]
         [ActionName("GetAllUser")]
-        public List<User> GetAllUser()
+        public IHttpActionResult GetAllUser()
         {
             try
             {
                 Trace.WriteLine(String.Format("LoginController - Get"));
-                return logBL.Getallusers();
+                return Ok(logBL.Getallusers());
 
             }
             catch (Exception e)
             {
                 Trace.TraceError(String.Format("LoginController - Get - Error: %s", e.Message));
-                throw new Exception(e.Message);
+                return BadRequest(e.Message);
             }
         }
 
