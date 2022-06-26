@@ -81,6 +81,44 @@ namespace WebApplication1.Controllers
 
             }
         }
+
+        [HttpPut]
+        [ActionName("editDep")]
+
+        public IHttpActionResult editDep([FromBody] Department1 data, [FromUri] int depId)
+        {
+            try
+            {
+                Trace.WriteLine(String.Format("DepartmentController - editDep"));
+                Department1 result = depBL.editOne(data, depId);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(String.Format("LoginController - editDep - Error: %s", e.Message));
+                return BadRequest(String.Format("{0}", e.Message));
+
+            }
+        }
+
+        [HttpDelete]
+        [ActionName("deleteDep")]
+
+        public IHttpActionResult deleteDep([FromUri] int depId)
+        {
+            try
+            {
+                Trace.WriteLine(String.Format("DepartmentController - deleteDep"));
+                Department1 result = depBL.delete(depId);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(String.Format("LoginController - deleteDep - Error: %s", e.Message));
+                return BadRequest(String.Format("{0}", e.Message));
+
+            }
+        }
     }
 }
         

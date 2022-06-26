@@ -77,11 +77,41 @@ namespace WebApplication1.Models
             return newDepartment;
         }
 
-        public void Delete(int depId)
+        public Department1 editOne(Department1 updateDep, int id)
         {
-            var department = depBL.Department1.Find(depId);
+            var departIsExist = depBL.Department1.Where(x => x.ID == id).FirstOrDefault();
+            if (departIsExist == null)
+            {
+                throw new Exception(String.Format("departement id: {0} dosen't exist",id));
+            }
+
+            if(updateDep.Name != null)
+            departIsExist.Name = updateDep.Name;
+            if (updateDep.Manager != null)
+                departIsExist.Manager = updateDep.Manager;
+
+            var checkIfNewNameIsTaken = depBL.Department1.Where(x => x.Name.ToLower() == updateDep.Name.ToLower()).FirstOrDefault();
+            if (checkIfNewNameIsTaken != null)
+            {
+                throw new Exception(String.Format("departement name: {0} already exist", updateDep.Name));
+            }
+
+            depBL.SaveChanges();
+
+            return departIsExist;
+        }
+
+        public Department1 delete(int depId)
+        {
+            var department = depBL.Department1.Where(x=>x.ID == depId).FirstOrDefault();
+            if (department == null)
+            {
+                throw new Exception(String.Format("departement id: {0} dosen't exist", depId));
+            }
             depBL.Department1.Remove(department);
             depBL.SaveChanges();
+
+            return department;
         }
     }
 }
