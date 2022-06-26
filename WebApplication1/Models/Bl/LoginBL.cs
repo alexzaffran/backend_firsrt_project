@@ -9,20 +9,22 @@ namespace WebApplication1.Models
     {
         FactoryEntities1 db = new FactoryEntities1();
 
-        //public bool IsUserExist(string User_Name, string Password)
-        //{
-        //    var result = db.User.Where(x => x.User_Name == User_Name && x.Password == Password);
-        //    if (result.Count() > 0)
-        //    {
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
+        public User IsAuthenticated(UserLoginRequest userLoginRequest)
+        {
+            var userFounded = db.User
+                .Where(u => u.User_Name == userLoginRequest.Username && u.Password == userLoginRequest.Password)
+                .FirstOrDefault();
+            if (userFounded == null)
+            {
+                return null;
+            }
+            else
+            {
+                return userFounded;
+            }
+        }
 
-            public List<User> Getallusers()
+        public List<User> Getallusers()
         {
             return db.User.ToList();
         }

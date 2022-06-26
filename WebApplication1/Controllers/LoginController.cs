@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using WebApplication1.Models;
 
@@ -16,6 +17,45 @@ namespace WebApplication1.Controllers
         static LoginBL logBL = new LoginBL();
 
         // GET: api/Login
+        [HttpPost]
+        [ActionName("Login")]
+        public User Login([FromBody] UserLoginRequest body)
+        {
+            try
+            {
+                var rightUser = logBL.IsAuthenticated(body);
+                Trace.WriteLine(String.Format("LoginController - Login"));
+                if (rightUser != null)
+                {
+                    HttpContext.Current.Session["isIsAuthenticated"] = true;
+                    HttpContext.Current.Session["userId"] = rightUser.ID;
+                }
+                return rightUser;
+
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(String.Format("LoginController - Get - Error: %s", e.Message));
+                throw new Exception(e.Message);
+            }
+        }
+
+        [HttpGet]
+        [ActionName("Logout")]
+        public void Logout()
+        {
+            try
+            {
+                Trace.WriteLine(String.Format("LoginController - Logout"));
+                HttpContext.Current.Session.Clear();
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(String.Format("LoginController - Logout - Error: %s", e.Message));
+                throw new Exception(e.Message);
+            }
+        }
+
         [HttpGet]
         [ActionName("GetAllUser")]
         public List<User> GetAllUser()
