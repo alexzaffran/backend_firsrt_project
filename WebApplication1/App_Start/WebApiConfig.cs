@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.WebHost;
+using WebApplication1.App_Start;
 
 namespace WebApplication1
 {
@@ -9,6 +11,14 @@ namespace WebApplication1
     {
         public static void Register(HttpConfiguration config)
         {
+            var httpControllerRouteHandler = typeof(HttpControllerRouteHandler).GetField("_instance",
+                System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
+
+            if (httpControllerRouteHandler != null)
+            {
+                httpControllerRouteHandler.SetValue(null,
+                    new Lazy<HttpControllerRouteHandler>(() => new SessionHttpControllerRouteHandler(), true));
+            }
             // Web API configuration and services
 
             // Web API routes
@@ -19,6 +29,7 @@ namespace WebApplication1
                 routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
         }
     }
 }

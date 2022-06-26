@@ -1,18 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using System.Web.SessionState;
 using WebApplication1.Models;
 
 
 namespace WebApplication1.Controllers
 {
-    public class LoginController : ApiController
+    public class LoginController : ApiController, IRequiresSessionState
     {
         static LoginBL logBL = new LoginBL();
 
@@ -27,8 +24,8 @@ namespace WebApplication1.Controllers
                 Trace.WriteLine(String.Format("LoginController - Login"));
                 if (rightUser != null)
                 {
-                    HttpContext.Current.Session["isIsAuthenticated"] = true;
-                    HttpContext.Current.Session["userId"] = rightUser.ID;
+                    HttpContext.Current.Session["IsIsAuthenticated"] = true;
+                    HttpContext.Current.Session["UserId"] = rightUser.ID;
                 }
                 return rightUser;
 
