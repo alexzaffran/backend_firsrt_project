@@ -7,11 +7,11 @@ using System.Web.Http;
 using WebApplication1.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-
-
+using System.Web.Http.Cors;
 
 namespace WebApplication1.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class DepartmentController : ApiController
     {
         static DepartmentBL depBL = new DepartmentBL();

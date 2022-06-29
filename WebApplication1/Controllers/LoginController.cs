@@ -5,15 +5,17 @@ using System.Web;
 using System.Web.Http;
 using System.Web.SessionState;
 using WebApplication1.Models;
+using System.Web.Http.Cors;
 
 
 namespace WebApplication1.Controllers
-{
+{ 
+    [EnableCors(origins:"*",headers:"*",methods:"*")]
     public class LoginController : ApiController, IRequiresSessionState
     {
         static LoginBL logBL = new LoginBL();
 
-        // GET: api/Login
+        // POST: api/Login
         [HttpPost]
         [ActionName("Login")]
         public IHttpActionResult Login([FromBody] UserLoginRequest body)
@@ -55,8 +57,8 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        [ActionName("GetAllUser")]
-        public IHttpActionResult GetAllUser()
+        [ActionName("GetAllUsers")]
+        public IHttpActionResult GetAllUsers()
         {
             try
             {

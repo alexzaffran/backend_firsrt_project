@@ -8,8 +8,11 @@ using System.Web.Http;
 using webapplication1.models;
 using WebApplication1.Models;
 using System.Web;
+using System.Web.Http.Cors;
+
 namespace WebApplication1.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ShiftController : ApiController
     {
         static ShiftBl shiftBL = new ShiftBl();

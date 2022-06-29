@@ -21,6 +21,8 @@ namespace WebApplication1
             }
             // Web API configuration and services
 
+            config.EnableCors(true);
+
             // Web API routes
             config.MapHttpAttributeRoutes();
 
